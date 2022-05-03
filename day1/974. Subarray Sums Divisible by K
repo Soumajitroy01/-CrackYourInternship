@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int subarraysDivByK(vector<int>& nums, int k) {
+        unordered_map<int,int> mp;
+        int n = nums.size(),curr=0,ans=0;
+        mp[curr]++;
+        for(int i=0;i<n;i++)
+        {
+            curr += nums[i];
+            if(mp[((curr%k)+k)%k]) // as negative numbers are also there in the array
+                ans += mp[((curr%k)+k)%k];
+            mp[((curr%k)+k)%k]++;              
+        }
+        return ans;
+    }
+};
