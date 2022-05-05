@@ -1,0 +1,27 @@
+class Solution {
+public:
+    bool remove(string s, int l,int r)
+    {
+        while(l<=r)
+        {
+            if(s[l]!=s[r]) return false;
+            l++;
+            r--;
+        }
+        
+        return true;
+    }
+    bool validPalindrome(string s) {
+        static const auto fast=[](){ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);return nullptr;}();
+        int n = s.length();
+        int l=0,r=n-1;
+        while(l<=r)
+        {
+            if(s[l]!=s[r]) break;
+            l++;
+            r--;
+        }
+        
+        return remove(s,l+1,r) || remove(s,l,r-1);
+    }
+};
