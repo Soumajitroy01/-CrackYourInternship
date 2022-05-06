@@ -1,0 +1,31 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        static const auto fast=[](){ios_base::sync_with_stdio(false);cin.tie(nullptr);cout.tie(nullptr);return nullptr;}();
+        stack<string> words;
+        
+        s.push_back(' ');
+        string word = "";
+        for(int i = 0; i < s.length(); i++){
+            if(s.at(i) != ' '){
+                word += s.at(i);
+            }
+            
+            else if(s.at(i) == ' ' && !word.empty()){
+                words.push(word);
+                word.clear();
+            }
+        }
+        
+        string reversedWords = "";
+        while(!words.empty()){
+            reversedWords.append(words.top());
+            reversedWords.push_back(' ');
+            words.pop();
+        }
+        
+        reversedWords.pop_back();
+        
+        return reversedWords; 
+    }
+};
