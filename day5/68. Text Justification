@@ -1,0 +1,57 @@
+class Solution {
+public:
+    vector<string> fullJustify(vector<string>& words, int maxWidth) {
+        vector<string> text;
+        int total_words = 0, total_chars = 0, n = words.size(), mandatory_space_count = 0, i = 0, j = 0;
+        while(i < n) {
+            mandatory_space_count = 0;
+            total_chars = words[i].length();
+            total_words = 1;
+
+            j = i+1;
+            while(j < n && mandatory_space_count+1+total_chars+words[j].length() <= maxWidth) {
+                mandatory_space_count++;
+                total_chars += words[j].length();
+                total_words++;
+                j++;
+            }
+
+
+
+            int required_spaces = maxWidth-total_chars;
+            int slots = total_words-1;
+            int surplus_spaces = required_spaces-mandatory_space_count;
+            int left_slots = slots;
+            string s = words[i];
+            for(int k = i+1; k < j; k++) {
+                int surplus_space_per_slot = ceil((float)(surplus_spaces)/(float)(left_slots));
+                s += string(surplus_space_per_slot+1,' ');
+                surplus_spaces -= surplus_space_per_slot;
+                left_slots--;
+                s += words[k];
+            }
+
+
+
+            if(total_words == 1) {
+                s += string(maxWidth-total_chars,' ');
+            }
+            else if(j == n) {
+                string s = words[i];
+                for(int k = i+1; k < j; k++) {
+                    s += ' '+words[k];
+                }
+                s += string(maxWidth-total_chars-total_words+1,' ');
+                text.push_back(s);
+                i = j;
+                continue;
+            }
+
+
+            text.push_back(s);
+            i = j;
+        }
+
+        return text;
+    }
+};
