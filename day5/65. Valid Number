@@ -1,0 +1,60 @@
+class Solution {
+    bool isOneOrMoreDigits(const string &s, int low, int high){
+        if(low > high || high >= s.size() || low < 0) return false;
+        
+        for(int i = low; i <= high;i ++){
+            if(s[i] < '0' || s[i] > '9') return false;
+        }
+        
+        return true;
+    }
+    
+    bool isInteger(const string& s, int low, int high){
+        if(low > high || high >= s.size() || low < 0) return false;
+        
+        if(s[low] == '+' || s[low] == '-'){
+            low ++;
+        }
+        
+        return isOneOrMoreDigits(s, low, high);
+    }
+    
+    bool isDecimalOrInteger(const string& s, int low, int high){
+        if(low > high || high >= s.size() || low < 0) return false;
+        
+        if(s[low] == '+' || s[low] == '-'){
+            low ++;
+        }
+        
+        if(s[low] == '.'){ // has '.' at the left.
+            return isOneOrMoreDigits(s, low + 1, high);
+        }
+        
+        if(s[high] == '.'){ // has '.' at the right.
+            return isOneOrMoreDigits(s, low, high - 1);
+        }
+        
+        for(int i = low + 1; i < high; i ++){
+            if(s[i] == '.'){ // has '.' in the middle
+                return isOneOrMoreDigits(s, low, i - 1) && isOneOrMoreDigits(s, i + 1, high);
+            }
+        }
+        
+        // no '.', integer
+        return isOneOrMoreDigits(s, low, high);
+    }
+public:
+    bool isNumber(string s) {
+        if(isDecimalOrInteger(s, 0, s.size() - 1)){
+            return true;
+        }
+        
+        for(int i = 0;i < s.size(); i ++){
+            if(s[i] == 'e' || s[i] == 'E'){
+                return isDecimalOrInteger(s, 0, i - 1) && isInteger(s, i + 1, s.size() - 1);
+            }
+        }
+        
+        return false;
+    }
+};
