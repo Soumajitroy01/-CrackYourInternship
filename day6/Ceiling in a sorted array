@@ -1,0 +1,14 @@
+int ceilingInSortedArray(int n, int x, vector<int> &arr){
+    // Write your code here.
+    int l=0,h=n-1;
+    while(l<=h)
+    {
+        int mid = (l+h)/2;
+        if(arr[mid]==x) return x;
+        else if(arr[mid]>x) h = mid-1;
+        else l=mid+1;
+    }
+
+    if(l>=n) return -1;
+    return arr[l];
+}
