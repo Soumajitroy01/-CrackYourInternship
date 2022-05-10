@@ -1,0 +1,39 @@
+class Solution {
+public:
+    ListNode* reverseLL(ListNode* curr) {
+        
+        if(curr == NULL || curr->next == NULL) return curr;
+        ListNode* prev = NULL;
+        
+        while(curr != NULL) {
+            ListNode* forw = curr -> next;
+            curr -> next = prev;
+            prev = curr;
+            curr = forw;
+        }
+        return prev;
+    }
+    
+    
+    bool isPalindrome(ListNode* head) {
+        if(head == NULL || head-> next == NULL) return head;
+        ListNode *fast = head, *slow = head;
+        
+        while(fast && fast->next) {
+            fast = fast->next->next;
+            slow = slow -> next;
+        }
+        
+        ListNode *aux = reverseLL(slow);
+        ListNode *curr = head;
+        
+        while (curr != NULL && aux != NULL) {
+            if(curr -> val != aux -> val) return false;
+            curr = curr -> next;
+            aux = aux -> next;
+        }
+        
+        return true;        
+        
+    }
+};
