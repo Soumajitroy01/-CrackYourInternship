@@ -1,0 +1,42 @@
+class Solution{
+public:
+    Node* divide(int N, Node *head){
+        // code here
+        Node* evHead=NULL;
+        Node* odHead=NULL;
+        
+        Node * ev;
+        Node * od;
+        
+        while(head!=NULL){
+            if((head->data)%2==0){
+                if(evHead==NULL){
+                    evHead=head;
+                    ev=head;
+                }
+                else{
+                    ev->next=head;
+                    ev=ev->next;
+                }
+            }else{
+                if(odHead==NULL){
+                    odHead=head;
+                    od=head;
+                }
+                else{
+                    od->next=head;
+                    od=od->next;
+                }
+            }
+            head=head->next;
+        }
+        
+        if(evHead==NULL)
+            return odHead;
+        if(od!=NULL)
+            od->next=NULL;
+        
+        ev->next=odHead;
+        return evHead;
+    }
+};
