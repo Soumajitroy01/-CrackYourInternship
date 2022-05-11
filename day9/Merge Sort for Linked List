@@ -1,0 +1,52 @@
+class Solution{
+  public:
+    //Function to sort the given linked list using Merge Sort.
+    Node* getMid(Node *head)
+    {
+        Node *slow=head,*fast=head;
+        while(fast->next && fast->next->next)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        return slow;
+    }
+    Node *merge(Node *l1,Node *l2)
+    {
+        if(l1==NULL) return l2;
+        if(l2==NULL) return l1;
+        
+        Node *head=new Node(0);
+        Node *temp=head;
+        while(l1 && l2)
+        {
+            if(l1->data<=l2->data)
+            {
+                temp->next = l1;
+                l1=l1->next;
+            }
+            else
+            {
+                temp->next = l2;
+                l2=l2->next;
+            }
+            temp=temp->next;
+        }
+        
+        if(l1) temp->next=l1;
+        if(l2) temp->next=l2;
+        
+        return head->next;
+    }
+    Node* mergeSort(Node* head) {
+        // your code here
+        if(head==NULL || head->next==NULL) return head;
+        Node *mid=getMid(head);
+        Node *nhead = mid->next;
+        mid->next=NULL;
+        Node *l1 = mergeSort(head);
+        Node *l2 = mergeSort(nhead);
+        
+        return merge(l1,l2);
+    }
+};
