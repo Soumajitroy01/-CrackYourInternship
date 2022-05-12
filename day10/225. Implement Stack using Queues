@@ -1,0 +1,39 @@
+class MyStack {
+    queue<int> q;
+    bool peeked;
+public:
+    MyStack() {
+        peeked = false;
+    }
+    
+    void push(int x) {
+        q.push(x);
+        peeked = false;
+    }
+    
+    int pop() {
+        if(peeked == false){
+            top();
+        }
+        peeked = false;
+        int res = q.front();
+        q.pop();
+        return res;
+    }
+    
+    int top() {
+        if(peeked == false){
+            int size = q.size();
+            while(size-- > 1){
+                q.push(q.front());
+                q.pop();
+            }
+        }
+        peeked = true;
+        return q.front();
+    }
+    
+    bool empty() {
+        return q.empty();
+    }
+};
