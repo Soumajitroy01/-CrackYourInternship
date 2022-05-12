@@ -1,0 +1,91 @@
+Node*middle(Node*root)
+{
+    if(root==NULL || root->bottom==NULL)
+    {
+        return root;
+    }
+    Node*slow=root;
+    Node*fast=root->bottom;
+    while(fast!=NULL && fast->bottom!=NULL)
+    {
+        slow=slow->bottom;
+        fast=fast->bottom->bottom;
+    }
+    return slow;
+}
+Node*merge(Node*left,Node*right)
+{
+    if(left==NULL)
+    {
+        return right;
+    }
+    if(right==NULL)
+    {
+        return left;
+    }
+    Node*dummy=new Node(-1);
+    Node*ans=dummy;
+    while(left!=NULL && right!=NULL)
+    {
+        if(left->data<right->data)
+        {
+            ans->bottom=left;
+            ans=left;
+            left=left->bottom;
+        }
+        else{
+            ans->bottom=right;
+            ans=right;
+            right=right->bottom;
+            
+        }
+    }
+    while(left!=NULL)
+    {
+        ans->bottom=left;
+        ans=left;
+        left=left->bottom;
+    }
+    while(right!=NULL)
+    {
+        ans->bottom=right;
+        ans=right;
+        right=right->bottom;
+    }
+    ans=dummy ->bottom;
+    return ans;
+}
+Node* mergeSort(Node* root) {
+    if(root==NULL || root->bottom==NULL)
+    {
+        return root;
+    }
+    Node*left=root;
+    Node*mid=middle(root);
+    
+    Node*right=mid->bottom;
+    mid->bottom=NULL;
+    left=mergeSort(left);
+    right=mergeSort(right);
+    Node*ans=merge(left,right);
+    return ans;
+}
+Node *flatten(Node *root)
+{
+    Node*temp=root;
+     
+    while(temp!=NULL)
+    {
+        Node*next=temp->next;
+        while(temp->bottom!=NULL)
+        {
+            temp=temp->bottom;
+        }
+        temp->bottom=next;
+        temp=next;
+        //now sort
+    } 
+    Node*newRoot=mergeSort(root);
+      
+    return newRoot;
+}
