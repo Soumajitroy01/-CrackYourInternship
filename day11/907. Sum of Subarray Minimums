@@ -1,0 +1,53 @@
+class Solution {
+public:
+    long long mod = 1000000007;
+    int sumSubarrayMins(vector<int>& arr) {
+        ios::sync_with_stdio(false);
+		cin.tie(NULL);
+		cout.tie(NULL);
+        
+        int n = arr.size();
+        
+        vector<int> left(n);
+        vector<int> right(n);
+        
+        stack<pair<int,int>> stl;
+        stack<pair<int,int>> str;
+        
+        // fill left array
+        
+        for(int i = 0; i < n; i++)
+        {
+            int count = 1;
+            while(stl.empty() == 0 && stl.top().first >= arr[i])
+            {
+                count = count + stl.top().second;
+                stl.pop();
+            }
+            stl.push({arr[i],count});
+            left[i] = count;
+        }
+        
+        // fill right array
+        
+        for(int i = n-1; i >= 0 ; i--)
+        {
+            int count = 1;
+            while(str.empty() == 0 && str.top().first > arr[i])
+            {
+                count = count + str.top().second;
+                str.pop();
+            }
+            str.push({arr[i],count});
+            right[i] = count;
+        }
+        
+        int sum = 0;
+        for(int i = 0; i < n; i++)
+        {
+            sum = (sum % mod + (arr[i] % mod * left[i] % mod * right[i] % mod) % mod) % mod ;
+        }
+        
+        return sum; 
+    }
+};
