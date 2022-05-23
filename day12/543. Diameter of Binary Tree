@@ -1,0 +1,31 @@
+class Solution {
+public:
+    void FastIO()
+    {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+    }
+    int diameter(TreeNode* root, int *height)
+    {
+        int lh=0,rh=0;
+        int ldiameter=0,rdiameter=0;
+        if(root==NULL)
+        {
+            *height=0;
+            return 0;
+        }
+        
+        ldiameter=diameter(root->left,&lh);
+        rdiameter=diameter(root->right,&rh);
+        
+        *height = max(lh,rh)+1;
+        
+        return max(lh+rh+1,max(ldiameter,rdiameter));
+    }
+    int diameterOfBinaryTree(TreeNode* root) {
+        FastIO();
+        int height=0;
+        return diameter(root,&height)-1;
+    }
+};
