@@ -1,0 +1,18 @@
+class Solution {
+public:
+    string removeDuplicates(string s, int k) {
+        vector<pair<char, int>> st;    // store {char, count} in stack.
+        
+        for (auto& c: s) {
+            if (!st.empty() && st.back().first==c) {
+                if (st.back().second==k-1) st.pop_back();
+                else st.back().second++;
+            }
+            else st.push_back({c, 1});
+        }
+        
+        string res="";
+        for (auto& e: st) res+=string(e.second, e.first);
+        return res;
+    }
+};
