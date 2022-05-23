@@ -1,0 +1,29 @@
+class Solution {
+public:
+    TreeNode* mergeTrees(TreeNode* root1, TreeNode* root2) {
+        TreeNode* new_node = new TreeNode();
+        
+        if(root1 == NULL && root2 == NULL){
+            return NULL;
+        }
+        
+        if(root1 && root2){
+            new_node->val = root1->val + root2->val;
+        }
+        else if(root1){      
+            new_node->val = root1->val;
+        }
+        else if(root2){      
+            new_node->val = root2->val;
+        }
+        
+        new_node->left = mergeTrees(
+            root1 ? root1->left : NULL, root2 ? root2->left : NULL
+        );
+        new_node->right = mergeTrees(
+            root1 ? root1->right : NULL, root2 ? root2->right : NULL
+        );
+        
+        return new_node;
+    }
+};
