@@ -1,0 +1,30 @@
+class NestedIterator {
+    vector<int> v;
+    int i;
+public:
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        constructList(nestedList);
+        i=0;
+    }
+    
+    void constructList(vector<NestedInteger> &nestedList)
+    {
+        for(NestedInteger obj:nestedList)
+        {
+            if(obj.isInteger())
+                v.push_back(obj.getInteger());
+            else
+                constructList(obj.getList());
+        }
+    }
+    
+    int next() {
+        if(hasNext())
+            return v[i++];
+        return -1;
+    }
+    
+    bool hasNext() {
+        return i<v.size();
+    }
+};
