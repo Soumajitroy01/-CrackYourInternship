@@ -1,0 +1,35 @@
+class Solution {
+public:
+    void FastIO()
+    {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0);
+        cout.tie(0);
+    }
+    bool isidentical(TreeNode* s, TreeNode* t)
+    {
+        if(s==NULL&&t==NULL)
+            return true;
+        else if(s==NULL||t==NULL)
+            return false;
+        else
+            return ((s->val==t->val)&&
+                    isidentical(s->left,t->left)&&
+                    isidentical(s->right,t->right));
+    }
+
+    bool isSubtree(TreeNode* s, TreeNode* t) {
+        FastIO();
+        if(s==NULL)
+           return false;
+ 
+        if(s->val==t->val)
+        {
+            if(isidentical(s,t)) return true;
+        }
+        if(isSubtree(s->left,t) || isSubtree(s->right,t))
+            return true;
+        
+        return false;
+    }
+};
