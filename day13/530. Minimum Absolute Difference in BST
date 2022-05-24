@@ -1,0 +1,21 @@
+class Solution {
+public:
+    vector <int> v;
+    void find(TreeNode* root){
+        if (root == nullptr) {
+            return;
+        }
+        if (root->left != nullptr) find(root->left);
+        v.push_back(root->val);
+        if (root->right != nullptr) find(root->right);
+    } 
+    int getMinimumDifference(TreeNode* root) {
+        find(root);
+        // sort(v.begin(), v.end());
+        int ans = INT_MAX;
+        for (int i = 1; i < v.size(); i++) {
+            ans = min(ans, abs(v[i-1] - v[i]));
+        }
+        return ans;
+    }
+};
