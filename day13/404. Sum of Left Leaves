@@ -1,0 +1,14 @@
+class Solution {
+public:
+    TreeNode *prev=NULL;
+    int sumOfLeftLeaves(TreeNode* root) {
+        int sum=0;
+        if(!root->left && !root->right && prev && prev->left==root)
+            return sum+=root->val;
+        prev=root;
+        if(root->left) sum+= sumOfLeftLeaves(root->left);
+        if(root->right) sum+= sumOfLeftLeaves(root->right);
+        
+        return sum;
+    }
+};
