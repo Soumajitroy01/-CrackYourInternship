@@ -1,0 +1,20 @@
+class Solution {
+public:
+    void allPath(TreeNode* root,vector<string> &ans,string s){
+        s+=to_string(root->val);
+        if(root->left || root->right)s+="->";
+        if(!root->left && !root->right){
+            ans.push_back(s);
+            return;
+        }
+        if(root->left)allPath(root->left,ans,s);
+        if(root->right)allPath(root->right,ans,s);
+    }
+    vector<string> binaryTreePaths(TreeNode* root) {
+        if(!root->left && !root->right)return {to_string(root->val)};
+        vector<string>ans;
+        allPath(root,ans,"");
+        return ans;
+        
+    }
+};
