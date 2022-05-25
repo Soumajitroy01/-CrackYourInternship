@@ -1,0 +1,12 @@
+bool fun(Node *root,int mini,int maxi)
+{
+    if(!root) return true;
+    if(root->data==mini+1 && root->data==maxi-1) return false;
+    return fun(root->left,mini,root->data) && fun(root->right,root->data,maxi);
+}
+bool isDeadEnd(Node *root)
+{
+    int mini=0,maxi=INT_MAX;
+    bool ans = fun(root,mini,maxi);
+    return !ans;
+}
