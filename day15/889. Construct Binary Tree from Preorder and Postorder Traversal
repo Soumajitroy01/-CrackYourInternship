@@ -1,0 +1,24 @@
+class Solution {
+public:  
+    TreeNode* create(vector<int>& preorder, int prB, int prE, vector<int>& postorder, int poB, int poE) {
+        if(prB > prE || poB > poE) return NULL;
+        
+        TreeNode *root=new TreeNode(preorder[prB]);
+        if(prB==prE) return root;
+        
+        int i=poB;
+        while(postorder[i] != preorder[prB+1])
+            i++;
+        int noe = i-poB+1;
+        
+        root->left = create(preorder, prB+1, prB+noe,postorder,poB,i);
+        root->right = create(preorder, prB+noe+1, prE, postorder, i+1, poE-1);
+        return root;
+    }
+    TreeNode* constructFromPrePost(vector<int>& preorder, vector<int>& postorder) {
+        return create(preorder,0,preorder.size()-1,postorder, 0, postorder.size()-1);
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
