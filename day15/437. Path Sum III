@@ -1,0 +1,28 @@
+class Solution {
+    public:
+    int cnt = 0;
+    void trav(TreeNode* node, long long sum, long long tgt,
+              unordered_map<long long,int> &hm){
+        // if sum from root to the the node = tgt then 1 path is found
+        if(sum == tgt)
+            cnt++; 
+        // If sum from an anscestor(other than the root) = tgt
+        if(hm[sum-tgt] > 0)
+            cnt += hm[sum-tgt];
+        // Add the running sum to the hashMap
+        hm[sum] += 1;
+        if(node->left)
+            trav(node->left, sum + (node->left)->val, tgt, hm);
+        if(node->right)
+            trav(node->right, sum + (node->right)->val, tgt, hm);
+        // Remove the RS from the hashMap. This backtracking helps in reducing 
+        // Space Complexity
+        hm[sum] -= 1; 
+    }
+    int pathSum(TreeNode* root, int targetSum) {
+        unordered_map<long long, int> hm; 
+        if(root == NULL)return 0; 
+        trav(root, root->val, (long long)targetSum, hm);
+        return cnt; 
+    }
+};
