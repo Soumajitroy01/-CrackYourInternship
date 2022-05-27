@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void connectingWork(Node *node){
+		if(node == NULL)
+			return ;
+
+		if(node->left == NULL && node->right == NULL)
+			return ;
+
+		Node *curr = node ;
+		while(curr!=NULL){
+			curr->left->next = curr->right ; 
+			curr->right->next = curr->next == NULL ? NULL : curr->next->left ;
+			curr = curr->next ;
+		}
+		connectingWork(node->left) ;
+	}
+
+    Node *connect(Node *root) {
+		connectingWork(root) ;
+		return root ;
+	}
+};
