@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int maxPathSum(TreeNode* root) {
+        if(root==NULL) return 0;
+        int ans=INT_MIN;
+        solve(root,ans);
+        return ans;
+    }
+    int solve(TreeNode* root,int &ans){
+        if(root==NULL) return 0;
+
+        int maxsumL= max(0,solve(root->left,ans));
+        int maxsumR= max(0,solve(root->right,ans));
+        
+        ans= max(ans,root->val+maxsumL+maxsumR);     
+        
+        return root->val+ max(maxsumL,maxsumR);    
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
