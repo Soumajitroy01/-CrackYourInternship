@@ -1,0 +1,17 @@
+class Solution {
+public:
+    TreeNode* calculate(TreeNode* root){
+        if(!root) return NULL;
+        TreeNode* left = calculate(root->left);
+        TreeNode* right = calculate(root->right);
+        if(left) { 
+            left->right = root->right;
+            root->right = root->left;
+            root->left = NULL;
+        }
+        return right ? right:left ? left:root;
+    }
+    void flatten(TreeNode* root) {
+        calculate(root);
+    }
+};
