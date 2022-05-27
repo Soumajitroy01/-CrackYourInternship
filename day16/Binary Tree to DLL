@@ -1,0 +1,28 @@
+class Solution
+{
+    public: 
+    //Function to convert binary tree to doubly linked list and return it.
+    Node *prev=NULL;
+    void BinaryTree2DoubleLinkedList(Node *root, Node **head)
+    {
+        if (root == NULL) return;
+        BinaryTree2DoubleLinkedList(root->left,head);
+        if (prev == NULL)
+            *head = root;
+        else
+        {
+            root->left = prev;
+            prev->right = root;
+        }
+        prev = root;
+        
+        BinaryTree2DoubleLinkedList(root->right,head);
+    }
+    Node * bToDLL(Node *root)
+    {
+        Node *head = NULL;
+        prev=NULL;
+        BinaryTree2DoubleLinkedList(root, &head);
+        return head;
+    }
+};
