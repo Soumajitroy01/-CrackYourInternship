@@ -1,0 +1,19 @@
+Node* makeTree(int pre[], int st, int end) 
+{
+    if (st > end) return NULL;
+    Node* head = newNode(pre[st]);
+    int i = -1;
+    for (i = st + 1; i <= end; i++) {
+        if (pre[i] > pre[st]) break;
+    }
+    head -> left = makeTree(pre, st + 1, i - 1);
+    head -> right = makeTree(pre, i, end);
+    return head;
+}
+Node* post_order(int pre[], int size)
+{
+    //code here
+    int st = 0;
+    Node* head = makeTree(pre, st, size - 1);
+    return head;
+}
