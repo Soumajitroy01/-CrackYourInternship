@@ -1,0 +1,57 @@
+void findNumOfNodes(struct Node* ptr,int &nodes)
+{
+   if(!ptr) return;
+   findNumOfNodes(ptr->left,nodes);
+   nodes++;
+   findNumOfNodes(ptr->right,nodes);
+}
+
+int findNode(struct Node* ptr,int times)
+{
+   if(!ptr) return -1;
+   
+   stack<Node*> st;
+   Node* qtr =ptr;
+   int i=0;
+   
+   while(ptr || !st.empty())
+   {
+       if(ptr)
+       {
+           st.push(ptr);
+           ptr=ptr->left;
+       }
+       else
+       {
+           ptr=st.top();
+           st.pop();
+           
+           if(i++ == times-1) return ptr->data;
+           
+           ptr=ptr->right;
+       }
+   }
+   return -1;
+}
+
+float findMedian(struct Node *root)
+{
+    int num=0;
+    findNumOfNodes(root,num);
+    
+    if(num%2==0)
+    {
+        int times = num/2;
+        float num1=findNode(root,times);
+        float num2=findNode(root,times+1);
+        
+        return (num1+num2)/2;
+    }
+    else
+    {
+        int times = (num+1)/2;
+        return findNode(root,times);
+    }
+    
+    return 0;
+}
