@@ -1,0 +1,40 @@
+class Solution {
+    int n,m,ans;
+    vector<int> dx={0,0,1,-1};
+    vector<int> dy={1,-1,0,0};
+    
+    bool limit(int x,int y)
+    {
+        return (x>=0 and y>=0 and x<n and y<m);
+    }
+    void dfs(vector<vector<char>>& g,int i,int j)
+    {
+        if(!limit(i,j)) return;
+        if(g[i][j]=='0') return;
+        
+        g[i][j]='0';
+        for(int k=0;k<4;k++)
+        {
+            int newX = i+dx[k], newY = j+dy[k];
+            dfs(g,newX,newY);
+        }
+    }
+public:
+    int numIslands(vector<vector<char>>& g) {
+        n=g.size(),m=g[0].size();
+        ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(g[i][j]=='1')
+                {
+                    dfs(g,i,j);
+                    ans++;
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
