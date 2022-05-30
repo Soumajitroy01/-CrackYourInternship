@@ -1,0 +1,26 @@
+class Solution {
+    int camera=0;
+public:
+    int minCameraCover(TreeNode* root) {
+        if(solve(root)==-1) camera++;
+        return camera;
+    }
+    int solve(TreeNode *root)
+    {
+        if(root==NULL)
+            return 1;
+        
+        int l = solve(root->left);
+        int r = solve(root->right);
+        
+        if(l==-1 || r==-1)
+        {
+            camera++;
+            return 0;
+        }
+        
+        if(l==0 || r==0)
+            return 1;
+        return -1;
+    }
+};
