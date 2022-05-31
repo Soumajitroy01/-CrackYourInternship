@@ -1,0 +1,28 @@
+class Solution{
+public:
+    void helper(int i,int j, string s, vector<string>&ans,vector<vector<int>> m,int n){
+       if(i<0 or j<0 or i>=n or j>=n){
+           return;
+       }
+       if(m[i][j]==0){
+           return;
+       }
+       if(i==n-1 and j==n-1){
+           ans.push_back(s);
+
+           return;
+       }
+       m[i][j]=0;
+       helper(i,j+1,s+'R',ans,m,n);
+       helper(i,j-1,s+'L',ans,m,n);
+       helper(i+1,j,s+'D',ans,m,n);
+       helper(i-1,j,s+'U',ans,m,n);
+   }
+   vector<string> findPath(vector<vector<int>> &m, int n) {
+       // Your code goes here
+       vector<string>ans;
+       string s="";
+       helper(0,0,s,ans,m,n);
+       return ans;
+   }
+};
