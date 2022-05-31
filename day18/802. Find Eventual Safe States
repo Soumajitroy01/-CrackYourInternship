@@ -1,0 +1,54 @@
+class Solution {
+private:
+    enum Color { WHITE, GREY, BLACK };
+public:
+    // TC: O(V + E)
+    // SC: O(V)
+    // Retruns true if there is a cycle
+    bool dfs(int curr, vector<vector<int>>& graph, vector<Color>& color) {
+        // Node already processed
+        if(color[curr] != WHITE)
+            return color[curr] == GREY;
+        
+        // Mark it as processing
+        color[curr] = GREY;
+
+        // process the neighbors
+        for(auto neighbor: graph[curr]) {
+            // Node already on the recursion stack
+            if(color[neighbor] == GREY)
+                return true;
+            // Check if a cycle is found at a later stage
+            if(color[neighbor] == WHITE && dfs(neighbor, graph, color))
+                return true;
+        }
+
+        // Processing finished
+        color[curr] = BLACK;
+        return false;
+    }
+
+    vector<int> dfsColorSol(vector<vector<int>>& graph) {
+        vector<int> result;
+        int N = graph.size();
+        
+        // Colors to represent the state of nodes.
+        // White: Unprocessed node
+        // Grey: (Unsafe node) When node is under processing in the current recursion stack.
+        //        If node is part of cyclic path, then this state won't change to Black for the current node
+        // Black: (Safe Node) When node has finished processing this is assigned
+        vector<Color> color(N, WHITE);
+
+        for(int i = 0; i < N; i++) {
+            if(!dfs(i, graph, color))
+                result.emplace_back(i);
+        }
+        return result;
+    }
+
+    vector<int> eventualSafeNodes(vector<vector<int>>& graph) {
+        // return dfsDPSol(graph);
+        // return bfsReversalSol(graph);
+        return dfsColorSol(graph);
+    }
+};
