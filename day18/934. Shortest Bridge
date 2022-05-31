@@ -1,0 +1,82 @@
+class Solution {
+public:
+    int dir[4][2]={{1,0},{0,1},{-1,0},{0,-1}};  
+    int count=0;
+    
+    // for finding minimum count to connect both island
+    int minCount(vector<vector<int>> &grid,queue<pair<int,int>> &q,int n){
+        while(!q.empty()){
+            int size=q.size();
+            while(size--){
+                auto p=q.front();
+                q.pop();
+                for(int k=0;k<4;k++){
+                    int dirx=p.first+dir[k][0];
+                    int diry=p.second+dir[k][1];
+                    if(dirx<0 || diry<0 || dirx>=n || diry>=n){
+                        continue;
+                    }
+                    else if(grid[dirx][diry]==1)return count;
+                    else if(grid[dirx][diry]==0){
+                        grid[dirx][diry]=2;
+                        q.push({dirx,diry});
+                    }
+                }
+            }
+            count++;
+        }
+        return count;
+    }
+    
+    
+    // for visiting the first island and marking it visited
+    void bfs(vector<vector<int>>& grid,int i,int j,int n){
+        queue<pair<int,int>> q;
+        grid[i][j]=2;
+        q.push({i,j});
+        while(!q.empty()){
+            auto p=q.front();
+            q.pop();
+            for(int k=0;k<4;k++){
+                int dirx=p.first+dir[k][0];
+                int diry=p.second+dir[k][1];
+                if(dirx>=0 && diry>=0 && dirx<n && diry<n && grid[dirx][diry]==1){
+                    grid[dirx][diry]=2;
+                    q.push({dirx,diry});
+                }
+            }
+        }
+    }
+    
+    // starting
+    int shortestBridge(vector<vector<int>>& grid) {
+        int n=grid.size();
+        bool flag=false;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==1){                    
+                    bfs(grid,i,j,n);
+                    flag = true;
+                    break;
+                }
+            }
+            if(flag)break;
+        }
+        
+        // makeing queue
+        queue<pair<int,int>> q;
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(grid[i][j]==2){
+                    q.push({i,j});
+                }
+            }
+        }
+        
+        return minCount(grid,q,n);
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
