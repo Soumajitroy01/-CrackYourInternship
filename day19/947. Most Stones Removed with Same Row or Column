@@ -1,0 +1,50 @@
+class Solution {
+    unordered_map<int,vector<int>> row,col;
+    void dfs(int idx, vector<bool>& vis, vector<vector<int>>& stones)
+    {
+        vis[idx]=1;
+        
+        int r = stones[idx][0];
+        int c = stones[idx][1];
+        
+        for(auto i:row[r])
+        {
+            if(!vis[i])
+                dfs(i,vis,stones);
+        }
+        
+        for(auto i:col[c])
+        {
+            if(!vis[i])
+                dfs(i,vis,stones);
+        }
+    }
+public:
+    int removeStones(vector<vector<int>>& stones) {
+        int n = stones.size();
+        vector<bool> vis(n,0);
+        
+        for(int i=0;i<n;i++)
+        {
+            int r=stones[i][0];
+            int c = stones[i][1];
+            row[r].push_back(i);
+            col[c].push_back(i);
+        }
+        
+        int comp=0;
+        for(int i=0;i<n;i++)
+        {
+            if(!vis[i])
+            {
+                dfs(i,vis,stones);
+                comp++;
+            }
+        }
+        
+        return n-comp;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
