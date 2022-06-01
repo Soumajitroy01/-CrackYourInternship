@@ -1,0 +1,51 @@
+class Solution {
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int distanceThreshold) {
+        int arr[n][n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(i==j){
+                    arr[i][j]=0;
+                }else{
+                    arr[i][j]=INT_MAX;
+                }
+            }
+        }
+        for(int i=0;i<edges.size();i++){
+                arr[edges[i][0]][edges[i][1]]=edges[i][2];
+                arr[edges[i][1]][edges[i][0]]=edges[i][2];
+        }
+        for(int k=0;k<n;k++){
+        for(int i=0;i<n;i++){
+            for(int j=0;j<n;j++){
+                if(arr[i][k]==INT_MAX or arr[k][j]==INT_MAX){
+                    continue;
+                }
+                if(arr[i][j]>(arr[i][k]+arr[k][j])){
+                    arr[i][j]=arr[i][k]+arr[k][j];
+                }
+            }
+          }
+        }
+        vector<int> ans;
+        int m=INT_MAX;
+         for(int i=0;i<n;i++){
+             int c=0;
+            for(int j=0;j<n;j++){
+                if(i==j)continue;
+                if(arr[i][j]<=distanceThreshold){
+                    c++;
+                }
+             }
+             m=min(m,c);
+             ans.push_back(c);
+         }
+         int final_ans=-1;
+         for(int i=0;i<n;i++){
+             if(m==ans[i]){
+                 final_ans=i;
+             }
+         }
+         return final_ans;
+    }
+};
