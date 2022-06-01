@@ -1,0 +1,37 @@
+class Solution {
+public:
+    bool dfs(int s,vector<bool>& vis,vector<bool>& order,vector<int> adj[])
+    {
+        vis[s]=true;
+        order[s]=true;
+        for(auto n:adj[s])
+        {
+            if(!vis[n]){
+                if(dfs(n,vis,order,adj)) return true;
+            }
+            else if(order[n])
+                return true;
+        }
+        order[s]=false;
+        return false;
+    }
+    bool isCyclic(int V, vector<int> adj[]) {
+        // code here
+        vector<bool> vis(V,0);
+        vector<bool> order(V,0);
+        for(int i=0; i<V; i++){
+            if(!vis[i]){
+                if(dfs(i, vis, order, adj)) return true;
+            }
+        }
+        return false;
+    }
+	  bool isPossible(int n, vector<pair<int, int> >& prerequisites) {
+	      // Code here
+	      vector<int> adj[n];
+	      for(auto x:prerequisites)
+	          adj[x.second].push_back(x.first);
+	          
+	      return !isCyclic(n,adj);
+	  }
+};
