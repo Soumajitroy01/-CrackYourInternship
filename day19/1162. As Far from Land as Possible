@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& grid) {
+        int n = grid.size();
+        int ans = INT_MIN;
+        
+        queue<pair<int,int>> q;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<n;j++)
+                if(grid[i][j]==1)
+                    q.push({i,j});
+        }
+        
+        int dx[]={-1,0,0,1};
+        int dy[]={0,-1,1,0};
+       
+        while(!q.empty())
+        {
+            int x = q.front().first;
+            int y = q.front().second;
+            q.pop();
+            for(int i=0;i<4;i++)
+            {
+                int xi = x+ dx[i];
+                int yi = y + dy[i];
+                if(xi>=0 && yi>=0 && xi<n && yi<n && grid[xi][yi]==0)
+                {
+                    grid[xi][yi] = 1 + grid[x][y];
+                    ans = max(ans, grid[xi][yi]);
+                    q.push({xi,yi});
+                }
+            }
+        }
+        
+        if(ans==INT_MIN) return -1;
+        
+        return ans-1;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
