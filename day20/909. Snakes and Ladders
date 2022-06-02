@@ -1,0 +1,39 @@
+class Solution {
+    void getCordinate(int n,int s, int &row, int &col)
+    {
+        row = n-1-(s-1)/n;
+        col = (s-1)%n;
+        if((n%2==1 && row%2==1) || (n%2==0 && row%2==0))
+            col = n-1-col;
+        
+    }
+public:
+    int snakesAndLadders(vector<vector<int>>& board) {
+        int n= board.size();
+        vector<bool> vis(n*n+1,false);
+        queue<pair<int,int>> q;
+        q.push({1,0});
+        vis[1]=true;
+        while(!q.empty())
+        {
+            auto p = q.front(); q.pop();
+            int row,col,s = p.first, dist = p.second;
+            if(s==n*n) return dist;
+            for(int i=1;s+i<=n*n && i<=6;i++)
+            {
+                getCordinate(n,s+i,row,col);
+                int sfinal = board[row][col]==-1?s+i:board[row][col];
+                if(!vis[sfinal])
+                {
+                    vis[sfinal]=true;
+                    q.push({sfinal,dist+1});
+                }
+            }
+        }
+        
+        return -1;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
