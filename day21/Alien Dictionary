@@ -1,0 +1,48 @@
+class Solution{
+    void dfs(int s, vector<bool>& vis, vector<int> adj[], stack<int>& st)
+    {
+        vis[s]=true;
+        for(auto nei:adj[s])
+        {
+            if(!vis[nei]) dfs(nei,vis,adj,st);
+        }
+        
+        st.push(s);
+    }
+    public:
+    string findOrder(string dict[], int N, int K) {
+        //code here
+        vector<int> adj[K];
+        for(int i=0;i<N-1;i++)
+        {
+            int minlen = min(dict[i].length(), dict[i+1].length());
+            for(int j=0; j<minlen;j++)
+            {
+                if(dict[i][j]!=dict[i+1][j])
+                {
+                    adj[dict[i][j]-'a'].push_back(dict[i+1][j]-'a');
+                    break;
+                }
+            }
+        }
+        
+        stack<int> st;
+        vector<bool> vis(K, false);
+        for(int i=0;i<K;i++)
+        {
+            if(!vis[i])
+                dfs(i,vis,adj,st);
+        }
+        
+        string ans="";
+        while(!st.empty())
+        {
+            int top = st.top();
+            st.pop();
+            char ch = top+'a';
+            ans.push_back(ch);
+        }
+        
+        return ans;
+    }
+};
