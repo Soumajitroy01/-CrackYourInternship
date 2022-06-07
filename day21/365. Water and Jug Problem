@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool canMeasureWater(int j1, int j2, int t) {
+        if(j1+j2 < t) return false;
+        int directions[4] = {j1,-j1,j2,-j2};
+        unordered_map<int, bool> vis;
+        queue<int> q;
+        q.push(0);
+        vis[0] = true;
+        
+        while(!q.empty())
+        {
+            int cur = q.front();
+            q.pop();
+            if(cur==t) return true;
+            for(auto dir:directions)
+            {
+                int total = cur +dir;
+                if(total==t) return true;
+                if(total < 0 || total > j1+j2) continue;
+                if(!vis[total])
+                {
+                    vis[total] = true;
+                    q.push(total);
+                }
+            }
+        }
+        
+        return false;
+    }
+};
