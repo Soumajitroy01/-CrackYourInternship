@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        int i2=0,i3=0,i5=0;
+	    int next=1,num2=2,num3=3,num5=5,a[n];
+	    a[0]=next;
+	    for(int i=1; i<n; i++){
+		    next=min(num2,min(num3,num5));
+		    a[i]=next;
+		    if(next==num2){
+			    i2=i2+1;
+			    num2=2*a[i2];
+		    }
+		    if(next==num3){
+			    i3=i3+1;
+			    num3=3*a[i3];
+		    }
+		    if(next==num5){
+			    i5=i5+1;
+			    num5=5*a[i5];
+		    }
+	    }
+	    return next;
+    }
+};
