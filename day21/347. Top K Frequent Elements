@@ -1,0 +1,29 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int, int> frequency_map;
+        for(auto n : nums)
+            frequency_map[n]++;
+        
+        vector<int> ans;
+        
+        priority_queue<pair<int,int>> pq;
+        
+        for(auto it=frequency_map.begin(); it!=frequency_map.end(); it++)
+            pq.push(make_pair(it->second, it->first));
+        
+        while(k--)
+        {
+            if(!pq.empty())
+            {
+                ans.push_back(pq.top().second);
+                pq.pop();
+            }
+        }
+        
+        return ans;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
