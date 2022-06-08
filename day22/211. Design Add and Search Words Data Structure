@@ -1,0 +1,80 @@
+class WordDictionary {
+public:
+    WordDictionary() {
+        
+    }
+    
+    struct TrieNode
+    {
+        bool end;
+        TrieNode *child[26];
+        
+        TrieNode()
+        {
+            end = false;
+            for(int i=0;i<26;i++)
+                child[i]=NULL;
+        }
+    };
+    
+    TrieNode *root = new TrieNode();
+    
+    void addWord(string word) {
+        int n = word.size();
+        TrieNode *cur = root;
+        
+        for(int i=0;i<n;i++)
+        {
+            int idx = word[i] - 'a';
+            
+            if(cur->child[idx] == NULL)
+                cur->child[idx]  = new TrieNode();
+            
+            cur = cur->child[idx];
+        }
+        cur->end = true;
+    }
+    
+    bool search_rec(string& str, int i, int n, TrieNode *cur)
+    {
+        if(i==n) return cur->end;
+        if(str[i] != '.')
+        {
+            int idx = str[i] - 'a';
+            
+            if(cur->child[idx] == NULL)
+                return false;
+            return search_rec(str, i+1, n, cur->child[idx]);
+        }
+        else
+        {
+            for(int j=0;j<26;j++)
+            {
+                if(cur->child[j] != NULL)
+                {
+                    if(search_rec(str, i+1, n, cur->child[j]))
+                        return true;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    bool search(string word) {
+        int n = word.size();
+        TrieNode *cur = root;
+        
+        return search_rec(word, 0, n, cur);
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
+
+/**
+ * Your WordDictionary object will be instantiated and called as such:
+ * WordDictionary* obj = new WordDictionary();
+ * obj->addWord(word);
+ * bool param_2 = obj->search(word);
+ */
