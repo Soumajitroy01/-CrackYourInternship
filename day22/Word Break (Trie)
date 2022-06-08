@@ -1,0 +1,59 @@
+class Solution{
+    public:
+    // A : given string to search
+    // B : vector of available strings
+    struct TrieNode
+    {
+        bool end;
+        TrieNode *child[26];
+        
+        TrieNode()
+        {
+            end = false;
+            for(int i=0;i<26;i++)
+                child[i] = NULL;
+        }
+    };
+    
+    TrieNode *root;
+    
+    void addWord(string word)
+    {
+        int n = word.length();
+        TrieNode *cur = root;
+        
+        for(int i=0 ;i<n;i++)
+        {
+            int idx = word[i] - 'a';
+            
+            if(cur->child[idx] == NULL)
+                cur->child[idx] = new TrieNode();
+            cur = cur->child[idx];
+        }
+        cur->end = true;
+    }
+    
+    bool search(string& word, int i, int n, TrieNode *cur)
+    {
+        if(i==n) return cur->end;
+        
+        int idx = word[i] - 'a';
+        if(cur->child[idx] == NULL) return false;
+        if(cur->child[idx]->end)
+            return search(word, i+1, n, root) || search(word, i+1, n, cur->child[idx]);
+        return search(word, i+1, n, cur->child[idx]);
+    }
+    
+    int wordBreak(string A, vector<string> &B) {
+        //code here
+        root = new TrieNode();
+        for(int i=0;i<B.size();i++)
+        {
+            addWord(B[i]);
+        }
+        
+        int n = A.length();
+        if(search(A, 0, n, root)) return 1;
+        return 0;
+    }
+};
