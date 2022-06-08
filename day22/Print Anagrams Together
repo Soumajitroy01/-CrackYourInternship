@@ -1,0 +1,61 @@
+class Solution{
+    vector<vector<string>> ans;
+    struct TrieNode
+    {
+        bool end;
+        TrieNode *child[26];
+        vector<string> v;
+        
+        TrieNode()
+        {
+            end=false;
+            for(int i=0;i<26;i++)
+                child[i] = NULL;
+        }
+    };
+    
+    TrieNode *root;
+    
+    void insert(string s)
+    {
+        string word = s;
+        sort(s.begin(),s.end());
+        int n = s.length();
+        TrieNode *cur = root;
+        
+        for(int i=0;i<n;i++)
+        {
+            int idx = s[i] - 'a';
+            if(cur->child[idx] == NULL)
+                cur->child[idx] = new TrieNode();
+            cur = cur->child[idx];
+        }
+        cur->end = true;
+        cur->v.push_back(word);
+    }
+    
+    void dfs(TrieNode *root)
+    {
+        if(root == NULL) return;
+        if(root->end)
+        {
+            ans.push_back(root->v);
+            return;
+        }
+        
+        for(int i=0;i<26;i++)
+            dfs(root->child[i]);
+    }
+  public:
+    vector<vector<string> > Anagrams(vector<string>& string_list) {
+        //code here
+        root = new TrieNode();
+        for(int i=0;i<string_list.size();i++)
+        {
+            insert(string_list[i]);
+        }
+        
+        dfs(root);
+        return ans;
+    }
+};
