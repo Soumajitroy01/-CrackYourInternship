@@ -1,0 +1,29 @@
+void insert(struct TrieNode *root, string key)
+{
+    // code here
+    int n = key.length();
+    TrieNode *cur = root;
+    for(int i=0;i<n;i++)
+    {
+        int idx = key[i] - 'a';
+        if(cur->children[idx] == NULL)
+            cur->children[idx] = getNode();
+        cur = cur->children[idx];
+    }
+    cur->isLeaf = true;
+}
+
+//Function to use TRIE data structure and search the given string.
+bool search(struct TrieNode *root, string key) 
+{
+    // code here
+    int n = key.size();
+    TrieNode *cur = root;
+    for(int i=0;i<n;i++)
+    {
+        int idx = key[i] - 'a';
+        if(cur->children[idx] == NULL) return false;
+        cur = cur->children[idx];
+    }
+    return cur->isLeaf;
+}
