@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int minRefuelStops(int target, int startFuel, vector<vector<int>>& stations) {
+        priority_queue<int> pq;
+        int minStops = 0;
+        
+        for(int i=0;i<stations.size();i++){
+            
+            while(pq.size() > 0 && startFuel < stations[i][0]){
+                startFuel += pq.top();
+                pq.pop();
+                minStops += 1;
+            }
+                
+            if(startFuel < stations[i][0]){
+                return -1;
+            }
+            
+            pq.push(stations[i][1]);
+        }
+        
+        while(pq.size() > 0 && startFuel < target){
+            startFuel += pq.top();
+            minStops += 1;
+            pq.pop();
+        }
+        
+        if(startFuel < target){
+            return -1;
+        }
+        
+        return minStops;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
