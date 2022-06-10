@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<int> countBinary(string& s)
+    {
+        vector<int> arr(2);
+        for(auto c:s)
+        {
+            arr[c-'0']++;
+        }
+        return arr;
+    }
+    int findMaxForm(vector<string>& strs, int m, int n) {
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        
+        for(auto str:strs)
+        {
+            vector<int> count = countBinary(str);
+            for(int zero = m; zero>=count[0];zero--)
+            {
+                for(int one = n; one>=count[1];one--)
+                {
+                    dp[zero][one] = max(dp[zero-count[0]][one-count[1]]+1, dp[zero][one]);
+                }
+            }
+        }
+        
+        return dp[m][n];
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
