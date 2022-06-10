@@ -1,0 +1,49 @@
+class Cmp{
+    public:
+    bool operator()(pair<double,int> &a,pair<double,int> &b){
+        return a.second<b.second;
+    }
+};
+
+class Solution {
+public:
+    double mincostToHireWorkers(vector<int>& q, vector<int>& w, int k) {
+        
+        //from the first condition we got (wage_given_to_[i]/quality of [i]) has to be equal for all i;
+        vector<pair<double,int>> v;
+        int n=q.size();
+        for(int i=0;i<n;i++){
+            v.push_back({(double)w[i]/q[i],q[i]});
+        }
+        
+        //Note: (wage_given_to_[i]/quality of [i]) >= (wage[i]/quality[i])
+        sort(v.begin(),v.end());
+        int sum=0;
+        double ans=INT_MAX;
+        priority_queue<pair<double,int>,vector<pair<double,int>>,Cmp> h;
+        
+        //taking first k-1 ele... for the k-th ele we will start the main part
+        for(int i=0;i<k-1;i++){
+            sum+=v[i].second;
+            h.push(v[i]);
+        }
+        
+        // starting from kth ele bcoz for previous elements we will not able to get k elements ( (wage_given_to_[j]/quality of [j]) < (wage[j]/quality[j]) for j<i)
+        //taking the i-th element along with k-1 previous elemnts whose sum of qualities is minimum; 
+        for(int i=k-1;i<n;i++){
+            sum+=v[i].second;
+            h.push(v[i]);
+            if(ans>sum*v[i].first)ans=sum*v[i].first;
+            if(h.size()>k-1){
+                auto z=h.top();h.pop();
+                sum-=z.second;
+            }
+            
+        }
+        
+        return ans;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
