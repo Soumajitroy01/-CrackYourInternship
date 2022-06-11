@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int coinChange(vector<int>& coins, int amount) {
+        ios::sync_with_stdio(false);
+        cin.tie(NULL);
+        cout.tie(NULL);
+        const int inf=1e9+5;
+        vector<int> dp(amount+1,inf);
+        dp[0]=0;
+        for(auto coin:coins)
+        {
+            for(int i=coin;i<=amount;i++)
+            {
+                if(dp[i-coin]!=inf)
+                {
+                    dp[i]=min(dp[i],1+dp[i-coin]);
+                }
+            }
+        }
+        return dp[amount]==inf?-1:dp[amount];
+    }
+};
