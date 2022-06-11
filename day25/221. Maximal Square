@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int maximalSquare(vector<vector<char>>& mat) {
+        int m = mat.size(), n= mat[0].size();
+        int dp[m][n];
+        int maxi=0;
+        for(int i=0;i<m;i++)
+        {
+            if(mat[i][0] - '0')
+            {                
+                dp[i][0] = 1;
+                maxi=1;
+            }
+            else dp[i][0] = 0;
+        }
+        for(int j=1;j<n;j++)
+        {
+            if(mat[0][j] - '0')
+            {
+                dp[0][j] = 1;
+                maxi = 1;
+            }
+            else dp[0][j] = 0;
+        }
+        
+        for(int i=1;i<m;i++)
+        {
+            for(int j=1;j<n;j++)
+            {
+                if(mat[i][j] - '0')
+                {
+                    dp[i][j] = 1 + min(dp[i-1][j-1], min(dp[i-1][j], dp[i][j-1]));
+                    maxi = max(maxi, dp[i][j]);
+                }
+                else dp[i][j] = 0;
+            }
+        }
+        
+        return maxi*maxi;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
