@@ -1,0 +1,38 @@
+class NumMatrix {
+    vector<vector<int>> grid;
+public:
+    NumMatrix(vector<vector<int>>& matrix) : grid(matrix) {
+        int m = matrix.size(), n = matrix[0].size();
+        
+        for(int i=1;i<m;i++) grid[i][0] += grid[i-1][0];
+        for(int j=1;j<n;j++) grid[0][j] += grid[0][j-1];
+        
+        for(int i=1;i<m;i++)
+        {
+            for(int j=1;j<n;j++)
+            {
+                grid[i][j] += grid[i-1][j];
+                grid[i][j] += grid[i][j-1];
+                grid[i][j] -= grid[i-1][j-1];
+            }
+        }
+    }
+    
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        int sum = grid[row2][col2];
+        sum -= (row1 >= 1)? grid[row1-1][col2] : 0;
+        sum -= (col1 >= 1)? grid[row2][col1-1] : 0;
+        sum += (row1 >= 1 && col1 >= 1) ? grid[row1-1][col1-1] : 0;
+        
+        return sum;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
+
+/**
+ * Your NumMatrix object will be instantiated and called as such:
+ * NumMatrix* obj = new NumMatrix(matrix);
+ * int param_1 = obj->sumRegion(row1,col1,row2,col2);
+ */
