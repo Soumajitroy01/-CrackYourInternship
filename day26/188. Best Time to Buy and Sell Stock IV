@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int maxProfit(int k, vector<int>& prices) {
+        int n = prices.size();
+        vector<int> after(2*k+1, 0);
+        vector<int> cur(2*k+1, 0);
+        
+        for(int idx = n-1;idx>=0;idx--)
+        {
+            for(int trans = 2*k-1;trans>=0;trans--)
+            {
+                if(trans % 2 ==0) // buy
+                {
+                    cur[trans] = max(-prices[idx] + after[trans+1],
+                                    after[trans]);
+                }// sell
+                else cur[trans] = max(prices[idx] + after[trans+1],
+                                     after[trans]);
+            }
+            after = cur;
+        }
+        
+        return cur[0];
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
