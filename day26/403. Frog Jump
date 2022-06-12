@@ -1,0 +1,32 @@
+class Solution {
+public:
+     vector<vector<int>> visit;
+     unordered_map<int, int> pos;
+     bool canCross(vector<int>& stones) {
+         int n = stones.size();
+         visit.resize(n, vector<int>(n, -1));
+         for (int i = 0; i < n; ++i) {
+             pos[stones[i]] = i;
+         }
+         return dfs(0, 0, 0, n-1);
+     }
+     int dfs(int height, int k, int now, int end) {
+         if (visit[now][k] != -1) {
+             return visit[now][k];
+         }
+         if (pos[height] == end) {
+             return visit[now][k] = 1;
+         }
+         for (int i = max(k-1,1); i <= k+1; ++i) {
+             if (pos.find(height+i) != pos.end()) {
+                 if (dfs(height+i, i, pos[height+i], end)) {
+                     return visit[now][k] = 1;
+                 }
+             }
+         }
+         return visit[now][k] = 0;
+     }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
