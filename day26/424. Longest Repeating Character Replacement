@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int start = 0;
+        int counter = 0;
+        int maxlen = 0;
+        unordered_map<char,int> map;
+        for(int end =0;end<s.size(); end++){
+            char right = s[end];
+            map[right]++;
+            counter = max(counter,map[right]);
+            if(end-start+1 - counter > k){ //
+                char left = s[start];
+                map[left]--;
+                start++;
+            }
+            maxlen = max(maxlen,end-start+1);
+        }
+        return maxlen;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
