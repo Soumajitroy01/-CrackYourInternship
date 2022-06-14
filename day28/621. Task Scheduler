@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int leastInterval(vector<char>& tasks, int n) {
+        if(n==0) return tasks.size();
+        int sz = tasks.size();
+        int arr[26]={0};
+        int max_freq=0;
+        for(int i=0;i<sz;i++)
+        {
+            arr[tasks[i] - 'A']++;
+            max_freq = max(max_freq, arr[tasks[i] - 'A']);
+        }
+        int n_max_ele=0;
+        for(int i=0;i<26;i++)
+        {
+            if(arr[i]==max_freq) n_max_ele++;
+        }
+        
+        int ans = (max_freq-1) * (n+1) + n_max_ele;
+        return max(ans, sz);
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
