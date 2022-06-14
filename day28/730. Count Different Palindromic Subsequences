@@ -1,0 +1,55 @@
+class Solution {
+public:
+    int countPalindromicSubsequences(string s) {
+        long long int mod = 1e9+7;
+        int n = s.size();
+        long long int dp[n][n];
+        memset(dp, 0, sizeof(dp));
+        
+        for(int i=0;i<n;i++) dp[i][i]=1;
+        for(int i=0;i<n-1;i++) dp[i][i+1] = 2;
+        
+        unordered_map<char, int> mp;
+        int prev[n], next[n];
+        for(int i=0;i<n;i++)
+        {
+            if(mp[s[i]]) prev[i] = mp[s[i]];
+            else prev[i] = -1;
+            mp[s[i]] = i;
+        }
+        mp.clear();
+        for(int i=n-1;i>=0;i--)
+        {
+            if(mp[s[i]]) next[i] = mp[s[i]];
+            else next[i] = -1;
+            mp[s[i]] = i;
+        }
+        
+        for(int gap = 2;gap<n;gap++)
+        {
+            for(int i = 0;i+gap<n;i++)
+            {
+                int j = i+gap;
+                if(s[i]!=s[j])
+                    dp[i][j] = (dp[i+1][j]%mod + dp[i][j-1]%mod - dp[i+1][j-1]%mod)%mod;
+                else
+                {
+                    int p = prev[j];
+                    int n = next[i];
+                    if(p<n)
+                        dp[i][j] = (dp[i+1][j-1]%mod + dp[i+1][j-1]%mod + 2)%mod;
+                    else if(p==n)
+                        dp[i][j] = (dp[i+1][j-1]%mod + dp[i+1][j-1]%mod + 1)%mod;
+                    else
+                        dp[i][j] = (dp[i+1][j-1]%mod + dp[i+1][j-1]%mod - dp[n+1][p-1]%mod)%mod;
+                }
+                dp[i][j] = dp[i][j]<0? dp[i][j] + mod: dp[i][j]%mod;
+            }
+        }
+        
+        return dp[0][n-1]%mod;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
