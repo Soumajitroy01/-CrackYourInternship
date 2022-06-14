@@ -1,0 +1,60 @@
+class Solution {
+public:
+    void dfs(int node, vector<int> &ans, unordered_map<int, bool> &vis,
+            unordered_map<int, list<int>> &adj)
+    {
+        vis[node] = true;
+        ans.push_back(node);
+        
+        for(auto i: adj[node])
+        {
+            if(!vis[i])
+                dfs(i, ans, vis, adj);
+        }
+    }
+    
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        
+        unordered_map<int, list<int>> adj;
+        
+        for(int i=0;i<adjacentPairs.size();i++)
+        {
+            int u = adjacentPairs[i][0];
+            int v = adjacentPairs[i][1];
+            
+            adj[u].push_back(v);
+            adj[v].push_back(u);
+        }
+        
+        unordered_map<int, int> count;
+        
+        for(int i=0;i<adjacentPairs.size();i++)
+        {
+            count[adjacentPairs[i][0]]++;
+            count[adjacentPairs[i][1]]++;
+        }
+        
+        int start = -1;
+        int size = 0;
+        for(auto i=count.begin(); i!=count.end();i++)
+        {
+            size++;
+            if(i->second == 1)
+                start = i->first;
+        }
+        
+        vector<int> ans;
+        
+        unordered_map<int, bool> vis(size+1);
+        
+        if(!vis[start])
+        {
+            dfs(start, ans, vis, adj);
+        }
+        
+        return ans;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
