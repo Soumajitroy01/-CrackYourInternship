@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int minCost(string s, vector<int>& cost) {
+        ios_base::sync_with_stdio(false);
+        cin.tie(nullptr);
+        int n = s.size(),totalsum = cost[0], maxsum = cost[0], res = 0;
+        for(int i = 1; i < n; i++){
+            if(s[i] != s[i-1]){
+                res += totalsum - maxsum;
+                maxsum = 0;
+                totalsum = 0;
+            }
+            totalsum += cost[i];
+            maxsum = max(cost[i],maxsum);
+        }
+        res += totalsum - maxsum;
+        return res;
+    }
+};
