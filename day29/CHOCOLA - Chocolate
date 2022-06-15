@@ -1,0 +1,56 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+int solve(int m, int n, int x[], int y[])
+{
+    sort(x, x + m, greater<int>());
+    sort(y, y + n, greater<int>());
+
+    int x_cnt = 1, y_cnt = 1, sum = 0;
+    int i = 0, j = 0;
+    while (i < m && j < n)
+    {
+        if (x[i] > y[j])
+        {
+            sum += y_cnt * x[i];
+            i++;
+            x_cnt++;
+        }
+        else
+        {
+            sum += x_cnt * y[j];
+            j++;
+            y_cnt++;
+        }
+    }
+    while (i < m)
+    {
+        sum += y_cnt * x[i++];
+    }
+    while (j < n)
+    {
+        sum += x_cnt * y[j++];
+    }
+
+    return sum;
+}
+
+int main()
+{
+    int t;
+    cin >> t;
+    while (t--)
+    {
+        int m, n;
+        cin >> m >> n;
+        int x[m - 1], y[n - 1];
+        for (int i = 0; i < m - 1; i++)
+            cin >> x[i];
+        for (int i = 0; i < n - 1; i++)
+            cin >> y[i];
+
+        cout << solve(m - 1, n - 1, x, y);
+        cout << "\n";
+    }
+    return 0;
+}
