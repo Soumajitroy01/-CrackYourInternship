@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<bool> vis;
+    int count = 0;
+    void helper(int n, int pos)
+    {
+        if(pos > n)
+        {
+            count++;  
+            return;
+        }
+        for(int i = 1; i <= n; i++)
+        {
+            if(vis[i] == false && (i % pos == 0 || pos % i == 0))
+            {
+                vis[i] = true;
+                helper(n, pos + 1);
+                vis[i] = false;
+            }
+        }
+    }
+    
+    int countArrangement(int n) {
+        vis.resize(n + 1, false);
+        helper(n, 1);
+    
+        return count;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
