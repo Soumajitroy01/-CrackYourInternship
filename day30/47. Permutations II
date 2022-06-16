@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void backtrack(int id, vector<int>& nums, vector<vector<int>>& res) {
+        if (id == nums.size()) {
+            res.push_back(nums);
+            return;
+        }
+        for (int i = id; i < nums.size(); ++i) {
+            bool flag = false;
+
+            for (int j = id; j < i; ++j) {
+                if (nums[j] == nums[i]) {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag) continue;
+            swap(nums[i], nums[id]);
+            backtrack(id+1, nums, res);
+            swap(nums[i], nums[id]);
+        }
+    }
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        
+        // sort(nums.begin(), nums.end());
+        
+        vector<vector<int>> res;
+        backtrack(0, nums, res);
+        return res;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
