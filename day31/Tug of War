@@ -1,0 +1,30 @@
+void solve(vector<int>& nums, int i, vector<int>& s1, vector<int>& s2, int soset1, int soset2, int& mindiff)
+{
+    if(i==nums.size())
+    {
+        int diff = abs(soset1 - soset2);
+        mindiff = min(mindiff, diff);
+        return;
+    }
+    
+    if(s1.size() < (nums.size() + 1)/2)
+    {
+        s1.push_back(nums[i]);
+        solve(nums, i+1, s1, s2, soset1 + nums[i], soset2, mindiff);
+        s1.pop_back();
+    }
+    
+    if(s2.size() < (nums.size() + 1) / 2)
+    {
+        s2.push_back(nums[i]);
+        solve(nums, i+1, s1, s2, soset1, soset2 + nums[i], mindiff);
+        s2.pop_back();
+    }
+}
+int tugOfWar(vector<int> &arr, int n)
+{
+    vector<int> s1, s2;
+    int mindiff = INT_MAX;
+    solve(arr, 0, s1, s2, 0, 0, mindiff);
+    return mindiff;
+}
