@@ -1,0 +1,88 @@
+class NumArray {
+public:
+    vector<int> tree;
+    
+    int construct_seg_tree(vector<int>& arr, int left, int right, int i)
+    {
+        if(left == right)
+        {
+            tree[i] = arr[left];
+            
+            return tree[i];
+        }
+        
+        int mid = (left + right) / 2;
+        
+        int x = construct_seg_tree(arr, left, mid, 2 * i + 1);
+        
+        int y = construct_seg_tree(arr, mid + 1, right, 2 * i + 2);
+        
+        tree[i] = (x + y);
+        
+        return tree[i];
+    }
+    
+    int get_sum(int left, int right, int curr_left, int curr_right, int i)
+    {
+        if(curr_left > right || curr_right < left)
+            return 0;
+        
+        if(curr_left >= left && curr_right <= right)
+            return tree[i];
+        
+        int mid = (curr_left + curr_right) / 2;
+        
+        int x = get_sum(left, right, curr_left, mid, 2 * i + 1);
+        
+        int y = get_sum(left, right, mid + 1, curr_right, 2 * i + 2);
+        
+        return x + y;
+    }
+    
+    void updation(int curr_left, int curr_right, int i, int curr_idx, int diff)
+    {   
+        if(i < curr_left || i > curr_right)
+            return;
+        
+        tree[curr_idx] = tree[curr_idx] + diff;
+        
+        if(curr_left >= curr_right)
+            return;
+        
+        int mid = (curr_left + curr_right) / 2 ;
+        
+        updation(curr_left, mid, i, 2 * curr_idx + 1, diff);
+        
+        updation(mid + 1, curr_right, i, 2 * curr_idx + 2, diff);
+    }
+    
+    NumArray(vector<int>& arr) {
+        
+        int n = arr.size();
+        
+        tree = vector<int> ((4 * n), 0);
+        
+        construct_seg_tree(arr, 0, n - 1, 0);
+    }
+    
+    void update(int index, int new_val) {
+        
+        int n = tree.size() / 4;
+        
+        int old_val = sumRange(index, index);
+        
+        int diff = new_val - old_val;
+        
+        updation(0, n - 1, index, 0, diff);
+    }
+    
+    int sumRange(int left, int right) {
+        
+        int n = tree.size() / 4 ;
+        
+        return get_sum(left, right, 0, n - 1, 0);
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
