@@ -1,0 +1,17 @@
+class NumArray {
+public:
+    vector<int> arr;
+    NumArray(vector<int>& nums) {
+        arr = nums;
+        int n = nums.size();
+        for(int i =1;i<n;i++)
+            arr[i] += arr[i-1];
+    }
+    
+    int sumRange(int left, int right) {
+        return (left == 0)? arr[right] : arr[right] - arr[left-1];
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
