@@ -1,0 +1,96 @@
+class Solution {
+    struct TreeNode
+    {
+        int start, end, sum;
+        TreeNode *left, *right;
+        
+        TreeNode(int Start, int End)
+        {
+            start = Start;
+            end = End;
+            sum = 0;
+            
+            left = NULL;
+            right = NULL;
+        }
+    };
+    
+    TreeNode* buildTree(int start, int end)
+    {
+        if(start > end) return NULL;
+        TreeNode *node = new TreeNode(start, end);
+        
+        if(start==end) return node;
+        
+        int mid = start + (end - start) / 2;
+        node->left = buildTree(start, mid);
+        node->right = buildTree(mid+1, end);
+        
+        return node;
+    }
+    
+    void update(TreeNode *node, int index)
+    {
+        if(node == NULL) return;
+        
+        if(node->start == index && node->end == index)
+        {
+            node->sum += 1;
+            return;
+        }
+        
+        int mid = node->start + (node->end - node->start) / 2;
+        
+        if(index <= mid)
+            update(node->left, index);
+        else
+            update(node->right, index);
+        
+        node->sum = node->left->sum + node->right->sum;
+    }
+    
+    int sumRange(TreeNode *root, int start, int end)
+    {
+        if(start > end || root==NULL)
+            return 0;
+        
+        if(root->start == start && root->end == end)
+            return root->sum;
+        
+        int mid = root->start + (root->end - root->start) / 2;
+        if(end <= mid)
+            return sumRange(root->left, start, end);
+        else if (start > mid)
+            return sumRange(root->right, start, end);
+        return sumRange(root->left, start, mid) +
+                   sumRange(root->right, mid+1, end);
+    }
+public:
+    vector<int> countSmaller(vector<int>& nums) {
+        if(nums.size() == 0) return {};
+        
+        int n = nums.size();
+        vector<int> count(n);
+        int mini = INT_MAX;
+        int maxi = INT_MIN;
+        
+        for(int i=0;i<n;i++)
+        {
+            mini = min(mini, nums[i]);
+            maxi = max(maxi, nums[i]);
+        }
+        
+        TreeNode *root = buildTree(mini, maxi);
+        
+        for(int i = n-1;i>=0;i--)
+        {
+            update(root, nums[i]);
+            count[i] = sumRange(root, mini, nums[i] - 1);
+        }
+        
+        return count;
+    }
+};
+
+static bool     _foo = ios::sync_with_stdio(false);
+static ostream* _bar = cin.tie(NULL);
